@@ -1,3 +1,4 @@
+"use strict";
 const path = require('path');
 var webpack = require('webpack');
 const itemPages = require('./pages');
@@ -30,19 +31,28 @@ module.exports = {
                 test: /\.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader']
             },
-            {
-                test: /\.(gif|png|jpe?g|svg)$/i,
-                use: [
-                    'file-loader'
-                ]
-            },
-            {test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000$name=fonts/[name].[ext]'},
+            {test: /\.(woff2?)$/, loader: 'url-loader?limit=10000$name=fonts/[name].[ext]'},
             {test: /\.(ttf|eot)$/, loader: 'file-loader?name=fonts/[name].[ext]'},
+
             // pug
             {
                 test: /\.pug$/,
-                use: ["html-loader", "pug-html-loader"]
+                use: ["pug-loader"]
+            },
+            {
+                test: /\.(gif|png|jpe?g|svg|ico)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'img',
+                            publicPath: '/img/'
+                        }
+                    }
+                ]
             }
+
         ]
     },
     plugins: pluginArray
@@ -52,6 +62,6 @@ module.exports = {
         compress: true,
         port: 9001,
         stats: 'errors-only',
-        open: true
+        open: true,
     }
 }

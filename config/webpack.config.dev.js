@@ -1,7 +1,9 @@
+"use strict";
 const path = require('path');
 const itemPages = require('./pages');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const extractSass = new ExtractTextPlugin({
     filename: "./css/style.css",
     disable: false,
@@ -17,7 +19,16 @@ const cssConfig = extractSass.extract({
     fallback: "style-loader"
 });
 
+const pluginArray = [];
+pluginArray.push(extractSass);
+pluginArray.push(new CopyWebpackPlugin([
+{from: 'src/scss', to: 'scss'},
+{from: 'src/img', to: 'img'},
+]));
 
+itemPages.pages.forEach(function (item) {
+    pluginArray.push( new HtmlWebpackPlugin(item));
+});
 
 module.exports = {
     entry: './src/js/app.js',
@@ -32,27 +43,28 @@ module.exports = {
                 use: cssConfig
             },
             {
-                test: /\.(gif|ico|png|jpe?g|svg)$/i,
-                // ?name=[path][name].[ext] - сохранили оригинальное имя и путь в папке dist: dist\src\images\pugjs.png
-                //use: ["file-loader?name=[path][name].[ext]"]
-
-                // ?name=[name].[ext]&outputPath=images/ - оригинальное имя сохранит в папке images: dist\images\pugjs.png
-                use: ["file-loader?name=[name].[ext]&outputPath=img/",
-                ]
+                test: /\.(gif|ico|png|jpe?g|svg|ico)$/i,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        context: 'src/img/',
+                        name: '[name].[ext]',
+                        outputPath: '/img/',
+                        emitFile: false
+                    }
+                }]
             },
             {test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000$name=fonts/[name].[ext]'},
             {test: /\.(ttf|eot)$/, loader: 'file-loader?name=fonts/[name].[ext]'},
             // pug
             {
                 test: /\.pug$/,
-                use: ["html-loader",  {
-                    loader: 'pug-html-loader',
+                use: [{
+                    loader: 'pug-loader',
                     options: {
                         pretty: true,
                         exports: false,
                         debug: true,
-                        compileDebug: true,
-                        doctype: 'html'
                     }
                 }]
             },
