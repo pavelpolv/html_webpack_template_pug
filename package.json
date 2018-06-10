@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "description": "Html Webpack Template Pug",
   "author": "Pavel Polyakov",
-  "email" : "pavelpolv@gmail.com",
+  "email": "pavelpolv@gmail.com",
   "license": "MIT",
   "scripts": {
     "dev": "webpack --mode development --config config/webpack.config.dev.js",
     "build": "webpack --mode production --config config/webpack.config.prod.js",
     "start": "webpack-dev-server --config config/webpack.config.start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pavelpolv/html_webpack_template_pug"
   },
   "dependencies": {
     "copy-webpack-plugin": "^4.5.1",
