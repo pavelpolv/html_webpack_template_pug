@@ -4,8 +4,8 @@
 Данный шаблон позволяет быстро начать разработку с использованием современных инструментов. Пакет не содержит сторонних Java Script библиотек или HTML фреймворков и служит отправной точкой для Вашего приложения. Вы можете сами подключить необходимые пакеты удобным для Вас способом. Данный пакет не декларирует структуру проекта.
 
 ### Что включено
-[webpack-npm]: https://img.shields.io/npm/v/babel-loader.svg
-[babel-npm]: https://img.shields.io/npm/v/webpack.svg
+[webpack-npm]: https://img.shields.io/npm/v/webpack.svg
+[babel-npm]: https://img.shields.io/npm/v/babel-loader.svg
 [pug-npm]: https://img.shields.io/npm/v/pug-loader.svg
 [sass-npm]: https://img.shields.io/npm/v/sass-loader.svg
 
