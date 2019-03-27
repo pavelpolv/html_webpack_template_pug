@@ -1,22 +1,13 @@
 "use strict";
 const path = require('path');
 const itemPages = require('./pages');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const extractSass = new ExtractTextPlugin({
     filename: "./css/style.css",
     disable: false,
     allChunks: true
-});
-const cssConfig = extractSass.extract({
-    use: [{
-        loader: "css-loader", options: {minimize: true}
-    }, {
-        loader: "sass-loader", options: {minimize: true}
-    }],
-    // use style-loader in development
-    fallback: "style-loader"
 });
 
 const pluginArray = [];
@@ -41,8 +32,21 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/,
-                use: cssConfig
+                test: /\.(scss|sass|css)$/i,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'resolve-url-loader',
+                        { loader: 'sass-loader',
+                            options: {
+                                sourceMap: true,
+                                includePaths: [path.resolve(__dirname, '../node_modules')],
+                                minimize: true,
+                            }
+                        }
+                    ]
+                })
             },
             {
                 test: /\.(gif|ico|png|jpe?g|svg|ico)$/i,
@@ -75,7 +79,7 @@ module.exports = {
                 use: [ {
                     loader: 'html-loader',
                     options: {
-                        minimize: false,
+                        minimize: true,
                         removeComments: true,
                         collapseWhitespace: true
                     }

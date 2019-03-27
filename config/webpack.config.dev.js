@@ -39,8 +39,20 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/,
-                use: cssConfig
+                test: /\.(scss|sass|css)$/i,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        { loader: 'css-loader'},
+                        'resolve-url-loader',
+                        { loader: 'sass-loader',
+                            options: {
+                                sourceMap: true,
+                                includePaths: [path.resolve(__dirname, '../node_modules')]
+                            }
+                        }
+                    ]
+                })
             },
             {
                 test: /\.(gif|ico|png|jpe?g|svg|ico)$/i,
